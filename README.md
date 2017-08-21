@@ -1,3 +1,6 @@
+v 1.2
+added request field [get_file] returns current image data.
+
 v 1.1
 if request field [last_file] is not specified, returns first image data.
 

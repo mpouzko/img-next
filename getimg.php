@@ -11,6 +11,9 @@ if ($_REQUEST["last_file"] && $_REQUEST["last_file"] != "" ) {
 	}
 	$next_file = current($files);
 }
+elseif ( $_REQUEST["get_file"] ) {
+	$next_file = IMG_DIR.$_REQUEST["get_file"];
+}
 /*elseif (is_file(__DIR__."/next.txt")) {
 	$last_file = file_get_contents(__DIR__."/next.txt");
 	foreach ($files as $key => $file) {
