@@ -1,17 +1,26 @@
 <?php
 
-$IMG_DIR = __DIR__."/images/";
+function my_log($s) {
+	//file_put_contents(__DIR__."/log.txt", date("Y-m-d H:i:s ").$s."\r\n", FILE_APPEND);
+}
 
-header("Access-Control-Allow-Origin:*");
+$IMG_DIR = __DIR__."/images/";
+header("Cache-Control: no-cache");
+header("Access-Control-Allow-Origin: *");
 $files = glob($IMG_DIR."*.{jpg,png,gif,jpeg}", GLOB_BRACE);
+
 $next_file = false;
 if ($_REQUEST["last_file"] && $_REQUEST["last_file"] != "" ) {
 	foreach ($files as $key => $file) {
-		if ( strcmp( basename($file), $_REQUEST["last_file"]) == 0 )  {
+		if ( strcmp( basename($file), $_REQUEST["last_file"] ) == 0 )  {
+			my_log("equal");
 			break;
+			
 		}
 	}
-	$next_file = current($files);
+	
+	$next_file = $files[$key+1];
+	my_log($_REQUEST["last_file"]."   ".$next_file);
 }
 elseif ( $_REQUEST["get_file"] ) {
 	if(is_file($IMG_DIR.$_REQUEST["get_file"])){
@@ -34,16 +43,18 @@ elseif ( $_REQUEST["get_file"] ) {
 	$next_file = current($files);
 }*/
 
-else {
+elseif (!$next_file) {
+	
 		$next_file = $files[0];
 	}
 	
-
+my_log($next_file);
 	$response = [
 		"image" => base64_encode(file_get_contents($next_file)),
 		"name" => basename($next_file)
 	];
- 	header('Content-Type: application/json');
+	
+	header('Content-Type: application/json');
 	echo json_encode($response);
 /*if (!$_REQUEST["last_file"]) {
 	file_put_contents(__DIR__."/next.txt", basename($next_file));
