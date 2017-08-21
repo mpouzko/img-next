@@ -43,8 +43,7 @@ else {
 		"image" => base64_encode(file_get_contents($next_file)),
 		"name" => basename($next_file)
 	];
-	header("Access-Control-Allow-Origin: https://render.crowdflower.io");
-	header('Content-Type: application/json');
+ 	header('Content-Type: application/json');
 	echo json_encode($response);
 /*if (!$_REQUEST["last_file"]) {
 	file_put_contents(__DIR__."/next.txt", basename($next_file));
