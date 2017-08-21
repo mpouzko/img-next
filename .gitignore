@@ -1,2 +1,3 @@
 *.txt
 /images/*.*
+php_errors.log

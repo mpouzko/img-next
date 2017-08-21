@@ -1,0 +1,27 @@
+<html>
+	<body>
+		<img src="" alt="" id="img">
+	</body>
+	<script>
+
+		var img = document.getElementById("img");
+		var xhr = new XMLHttpRequest();
+
+		xhr.open('GET', 'http://localhost/img-next/getimg.php');
+		xhr.addEventListener('load',function(){
+			var xhr=this;
+			if (xhr.status != 200) {
+	  		alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+			} else {
+	  		var json = JSON.parse(xhr.responseText );
+	  		img.src= "data:image/jpeg;base64,"+json.image;
+			}	
+		})
+		xhr.send();
+
+
+		
+		
+		
+	</script>
+</html>
