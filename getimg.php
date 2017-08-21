@@ -1,7 +1,7 @@
 <?php
 
 function my_log($s) {
-	//file_put_contents(__DIR__."/log.txt", date("Y-m-d H:i:s ").$s."\r\n", FILE_APPEND);
+	file_put_contents(__DIR__."/log.txt", date("Y-m-d H:i:s ").$s."\r\n", FILE_APPEND);
 }
 
 $IMG_DIR = __DIR__."/images/";
@@ -9,27 +9,29 @@ header("Cache-Control: no-cache");
 header("Access-Control-Allow-Origin: *");
 $files = glob($IMG_DIR."*.{jpg,png,gif,jpeg}", GLOB_BRACE);
 
-$next_file = false;
+$next_file =  $files[0];
 if ($_REQUEST["last_file"] && $_REQUEST["last_file"] != "" ) {
 	foreach ($files as $key => $file) {
 		if ( strcmp( basename($file), $_REQUEST["last_file"] ) == 0 )  {
-			my_log("equal");
+		//	my_log("equal");
 			break;
 			
 		}
 	}
 	
-	$next_file = $files[$key+1];
-	my_log($_REQUEST["last_file"]."   ".$next_file);
+	
+	if (is_file($files[$key+1])){
+		$next_file = $files[$key+1];
+	}
+	
+	//my_log("key $key");
 }
 elseif ( $_REQUEST["get_file"] ) {
 	if(is_file($IMG_DIR.$_REQUEST["get_file"])){
 		$next_file = $IMG_DIR.$_REQUEST["get_file"]; 
 	}
 
-	else {
-		$next_file = $files[0];
-	}
+ 
 	
 }
 
@@ -43,12 +45,9 @@ elseif ( $_REQUEST["get_file"] ) {
 	$next_file = current($files);
 }*/
 
-elseif (!$next_file) {
+ 
 	
-		$next_file = $files[0];
-	}
-	
-my_log($next_file);
+//my_log($next_file);
 	$response = [
 		"image" => base64_encode(file_get_contents($next_file)),
 		"name" => basename($next_file)
