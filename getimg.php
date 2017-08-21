@@ -1,7 +1,9 @@
 <?php
-const IMG_DIR = __DIR__."/images/";
 
-$files = glob(IMG_DIR."*.{jpg,png,gif,jpeg}", GLOB_BRACE);
+$IMG_DIR = __DIR__."/images/";
+
+header("Access-Control-Allow-Origin:*");
+$files = glob($IMG_DIR."*.{jpg,png,gif,jpeg}", GLOB_BRACE);
 $next_file = false;
 if ($_REQUEST["last_file"] && $_REQUEST["last_file"] != "" ) {
 	foreach ($files as $key => $file) {
@@ -12,8 +14,16 @@ if ($_REQUEST["last_file"] && $_REQUEST["last_file"] != "" ) {
 	$next_file = current($files);
 }
 elseif ( $_REQUEST["get_file"] ) {
-	$next_file = IMG_DIR.$_REQUEST["get_file"];
+	if(is_file($IMG_DIR.$_REQUEST["get_file"])){
+		$next_file = $IMG_DIR.$_REQUEST["get_file"]; 
+	}
+
+	else {
+		$next_file = $files[0];
+	}
+	
 }
+
 /*elseif (is_file(__DIR__."/next.txt")) {
 	$last_file = file_get_contents(__DIR__."/next.txt");
 	foreach ($files as $key => $file) {
