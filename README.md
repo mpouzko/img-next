@@ -1,3 +1,6 @@
+v 1.1
+if request field [last_file] is not specified, returns first image data.
+
 v 1.0.
 now we use xmlhttprequest to transfer data from server.
 
